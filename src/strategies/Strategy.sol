@@ -1,62 +1,60 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.25;
 
-// Vault Contract
-// TODO: events
+// Strategy Contract
 abstract contract Strategy {
-    /// @notice address of token for deposit
-    address public depositToken;
 
-    struct StrategyParams {
-        uint256 alloc; // Allocation of the strategy
-    }
+    /*//////////////////////////////////////////////////////////////
+                                Modifers
+    //////////////////////////////////////////////////////////////*/
 
-    /// @notice Strategies
-    uint256 public strategyCount;
-    uint256 public totalAlloc;
-    address[] public strategies;
-    mapping(address => StrategyParams) public strategyParams;
-
-    /// @notice Compounder
-    address public compounder;
-
-    modifier onlyAdmin() {
-        require(msg.sender == admin, "Not admin");
+    modifier onlyVault() {
+        // refer to the controller or vault address
         _;
     }
 
-    function addStrategy(address strategy, StrategyParams calldata params) external {
-        // Add new strategy
-        // Rebalance allocation
+    /*//////////////////////////////////////////////////////////////
+                                View functions
+    //////////////////////////////////////////////////////////////*/
+
+    /**
+     * @notice Returns claimable rewards
+     */
+    function availabeRewards() external view returns (uint256) {
+        // return available rewards
     }
 
-    function removeStrategy(address strategy) external {
-        // Remove strategy
-        // Rebalance allocations
-    }
+    /*//////////////////////////////////////////////////////////////
+                                Vault operations
+    //////////////////////////////////////////////////////////////*/
 
-    function updateStrategy(StrategyParams calldata params) external {
-        // Update strategy params
-        // Rebalance allocations
-    }
-
+    /**
+     * @notice Invest funds
+     * @param amount of funds for deposit
+     */
     function deposit(uint256 amount) external {
-        // Transfer funds to external strategy
-        // Update user balance
+        // Process deposits
     }
 
+    /**
+     * @notice Withdraw funds from the strategy
+     * @param amount to withdraw
+     */
     function withdraw(uint256 amount) external {
-        // Transfer funds from external strategy to user
-        // Update user balance
+        // Process withdraw
     }
 
-    function compound() external onlyAdmin {
-        // Automatically reinvest earnings from external strategy
+    /**
+     * @notice Harvest rewards and compound them
+     * @dev Re-invest might need to move to the vault
+     */
+    function compound() external onlyVault {
+        // Process compound
     }
-
-    function distributeRewards() external onlyAdmin {
-        // Distribute daily rewards to users
+    
+    /**
+     * @notice Claim rewards and send to vault
+     */
+    function claim() external onlyVault {
     }
-
-    // Other functions for admin management and emergency procedures
 }
